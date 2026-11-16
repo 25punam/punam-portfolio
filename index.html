@@ -1,0 +1,1433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Punam Gode | Python & Django Developer</title>
+  <meta name="description" content="Portfolio of Punam Gode — Python & Django Developer specializing in scalable backend systems, REST APIs, Celery, Redis, PostgreSQL, and AI/RAG integrations." />
+  
+  <!-- Inter font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── Reset & Variables (Light Theme inspired by Rajath DA layout) ── */
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    :root {
+      --bg-page: #f8fafc;
+      --bg-sidebar: #ffffff;
+      --bg-topbar: rgba(255, 255, 255, 0.95);
+      --bg-card: #ffffff;
+      --bg-subtle: #f1f5f9;
+      --bg-highlight: #eff6ff;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-light: #64748b;
+      --border-color: #e2e8f0;
+      --border-focus: #93c5fd;
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --primary-subtle: #dbeafe;
+      --accent-terminal: #6366f1;
+      --green: #10b981;
+      --green-light: #d1fae5;
+      --sidebar-width: 260px;
+      --topbar-height: 64px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+      --shadow-md: 0 4px 12px rgba(15,23,42,0.06);
+      --font-code: 'Fira Code', monospace;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background-color: var(--bg-page);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    a {
+      color: var(--primary);
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+    a:hover {
+      color: var(--primary-dark);
+    }
+
+    /* ── Topbar (Header) ── */
+    .topbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: var(--topbar-height);
+      background: var(--bg-topbar);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      z-index: 100;
+    }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .menu-toggle-btn {
+      display: none;
+      background: none;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      padding: 7px;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    /* Coding Terminal Logo */
+    .brand-logo-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+    }
+
+    .code-terminal-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      background: linear-gradient(135deg, #4f46e5, #2563eb);
+      color: #ffffff;
+      border-radius: 8px;
+      font-family: var(--font-code);
+      font-size: 0.95rem;
+      font-weight: 700;
+      box-shadow: 0 2px 8px rgba(37,99,235,0.25);
+      user-select: none;
+    }
+
+    .brand-text-block {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-name {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .brand-role {
+      font-size: 0.75rem;
+      color: var(--text-light);
+      font-weight: 500;
+    }
+
+    /* Search Input Pill */
+    .topbar-center {
+      flex: 1;
+      max-width: 380px;
+      margin: 0 20px;
+    }
+
+    .search-box {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      border-radius: 999px;
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      color: var(--text-light);
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .search-box:hover {
+      border-color: var(--border-focus);
+      background: #ffffff;
+    }
+    .search-box input {
+      border: none;
+      outline: none;
+      background: transparent;
+      font-size: 0.82rem;
+      color: var(--text-main);
+      width: 100%;
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-topbar {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      border-radius: var(--radius-sm);
+      transition: all 0.2s ease;
+      text-decoration: none !important;
+    }
+
+    .btn-resume {
+      background: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+    }
+    .btn-resume:hover {
+      background: var(--bg-subtle);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    .btn-contact {
+      background: var(--primary);
+      color: #ffffff !important;
+      border: 1px solid var(--primary);
+      box-shadow: 0 2px 6px rgba(37,99,235,0.2);
+    }
+    .btn-contact:hover {
+      background: var(--primary-dark);
+    }
+
+    /* ── Layout Framework ── */
+    .app-layout {
+      display: flex;
+      margin-top: var(--topbar-height);
+      min-height: calc(100vh - var(--topbar-height));
+    }
+
+    /* ── Sidebar (Left Fixed Navigation) ── */
+    .sidebar {
+      width: var(--sidebar-width);
+      background: var(--bg-sidebar);
+      border-right: 1px solid var(--border-color);
+      position: fixed;
+      top: var(--topbar-height);
+      bottom: 0;
+      left: 0;
+      padding: 20px 14px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+      z-index: 90;
+    }
+
+    .nav-group-title {
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      padding: 0 10px 8px 10px;
+    }
+
+    .side-nav-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .side-nav-item a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.86rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: all 0.15s ease;
+    }
+
+    .side-nav-item a:hover {
+      background: var(--bg-subtle);
+      color: var(--primary);
+    }
+
+    .side-nav-item a.active {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      font-weight: 600;
+    }
+
+    .side-nav-icon {
+      width: 17px;
+      height: 17px;
+      stroke-width: 2;
+    }
+
+    .side-badge {
+      margin-left: auto;
+      font-size: 0.72rem;
+      font-weight: 700;
+      background: var(--bg-subtle);
+      color: var(--text-light);
+      padding: 1px 7px;
+      border-radius: 999px;
+      border: 1px solid var(--border-color);
+    }
+
+    /* Capabilities list in sidebar */
+    .capabilities-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .cap-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      padding: 6px 10px;
+      border-radius: var(--radius-sm);
+      background: var(--bg-page);
+      border: 1px solid var(--border-color);
+    }
+
+    .cap-item-icon {
+      font-size: 0.85rem;
+    }
+
+    /* ── Main Content Area ── */
+    .main-viewport {
+      margin-left: var(--sidebar-width);
+      flex: 1;
+      padding: 40px 48px 80px 48px;
+      max-width: 1100px;
+    }
+
+    /* ── Common Section Header ── */
+    .content-section {
+      padding-bottom: 60px;
+      scroll-margin-top: 80px;
+    }
+
+    .badge-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-transform: uppercase;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      border: 1px solid var(--primary-border);
+      padding: 4px 10px;
+      border-radius: 999px;
+      margin-bottom: 8px;
+    }
+
+    .section-headline {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.6px;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .section-subtext {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-bottom: 28px;
+    }
+
+    /* ── Hero Section (Home) ── */
+    .hero-card {
+      background: #ffffff;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 36px;
+      box-shadow: var(--shadow-sm);
+      margin-bottom: 40px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #2563eb, #6366f1);
+    }
+
+    .joiner-status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      background-color: var(--green);
+      border-radius: 50%;
+      box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.25);
+    }
+
+    .hero-main-title {
+      font-size: 2.3rem;
+      font-weight: 800;
+      letter-spacing: -0.8px;
+      line-height: 1.2;
+      margin-bottom: 6px;
+      color: var(--text-main);
+    }
+
+    .hero-main-title .gradient-text {
+      background: linear-gradient(135deg, #2563eb, #4f46e5);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-role-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin-bottom: 16px;
+    }
+
+    .hero-description {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      max-width: 780px;
+      margin-bottom: 24px;
+    }
+
+    .hero-cta-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .btn-hero {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.88rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .btn-hero-primary {
+      background: var(--primary);
+      color: #ffffff !important;
+      border: 1px solid var(--primary);
+      box-shadow: 0 2px 6px rgba(37,99,235,0.25);
+    }
+    .btn-hero-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .btn-hero-outline {
+      background: #ffffff;
+      color: var(--text-main) !important;
+      border: 1px solid var(--border-color);
+    }
+    .btn-hero-outline:hover {
+      border-color: var(--primary);
+      color: var(--primary) !important;
+      background: var(--bg-subtle);
+    }
+
+    .hero-links-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .hero-link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.84rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 5px 12px;
+      border-radius: var(--radius-sm);
+    }
+    .hero-link-pill:hover {
+      color: var(--primary);
+      border-color: var(--primary-border);
+      background: #ffffff;
+    }
+
+    /* ── Experience (Timeline Card matching Reference Image) ── */
+    .timeline-container {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+
+    .timeline-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 28px 32px;
+      box-shadow: var(--shadow-sm);
+      position: relative;
+      transition: all 0.2s ease;
+    }
+
+    .timeline-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-focus);
+    }
+
+    .timeline-card-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .job-title-wrap {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    .job-company-tag {
+      color: var(--primary);
+      font-weight: 800;
+    }
+
+    .timeline-period-pill {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-light);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .timeline-location {
+      font-size: 0.85rem;
+      color: var(--text-light);
+      margin-bottom: 16px;
+    }
+
+    /* Highlight Summary Box inside Experience (From Image) */
+    .experience-highlight-box {
+      background: var(--bg-highlight);
+      border: 1px solid #bfdbfe;
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      font-size: 0.92rem;
+      color: #1e3a8a;
+      line-height: 1.6;
+      font-weight: 500;
+      margin-bottom: 20px;
+    }
+
+    .timeline-label {
+      font-size: 0.74rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--text-light);
+      margin-bottom: 12px;
+    }
+
+    .timeline-bullet-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .timeline-bullet-list li {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      position: relative;
+      padding-left: 20px;
+      line-height: 1.6;
+    }
+
+    .timeline-bullet-list li::before {
+      content: '▸';
+      position: absolute;
+      left: 2px;
+      top: 0px;
+      color: var(--primary);
+      font-size: 0.95rem;
+    }
+
+    .timeline-bullet-list strong {
+      color: var(--text-main);
+    }
+
+    /* ── Projects Grid ── */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 22px;
+    }
+
+    .project-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s ease;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-focus);
+    }
+
+    .project-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+    }
+
+    .project-card-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .project-card-desc {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 18px;
+      flex-grow: 1;
+    }
+
+    .project-tag-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+
+    .tech-pill {
+      font-size: 0.74rem;
+      font-weight: 600;
+      color: var(--primary);
+      background: var(--primary-subtle);
+      border: 1px solid #bfdbfe;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .project-actions-row {
+      display: flex;
+      gap: 8px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .btn-project {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 6px 12px;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: #ffffff;
+      color: var(--text-main);
+    }
+
+    .btn-project:hover {
+      background: var(--primary);
+      color: #ffffff !important;
+      border-color: var(--primary);
+    }
+
+    /* ── Skills & Services ── */
+    .skills-category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 18px;
+    }
+
+    .skill-block {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 20px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .skill-block-title {
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: var(--primary);
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .skill-badge-cloud {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .skill-badge {
+      font-size: 0.82rem;
+      font-weight: 500;
+      color: var(--text-main);
+      background: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+      padding: 4px 10px;
+      border-radius: 999px;
+      transition: all 0.15s ease;
+    }
+
+    .skill-badge:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+      background: #ffffff;
+    }
+
+    /* ── Education Card ── */
+    .edu-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-left: 4px solid var(--primary);
+      border-radius: var(--radius-md);
+      padding: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .edu-degree {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .edu-sub {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .edu-badge {
+      background: var(--primary-subtle);
+      color: var(--primary);
+      border: 1px solid #bfdbfe;
+      font-weight: 700;
+      font-size: 0.85rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    /* ── Contact Section ── */
+    .contact-container-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      text-align: center;
+      box-shadow: var(--shadow-sm);
+    }
+
+    .contact-buttons-wrap {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    /* ── Responsive Styling ── */
+    @media (max-width: 900px) {
+      .topbar-center {
+        display: none;
+      }
+      .menu-toggle-btn {
+        display: block;
+      }
+      .sidebar {
+        transform: translateX(-100%);
+        transition: transform 0.25s ease;
+        box-shadow: 4px 0 16px rgba(0,0,0,0.1);
+      }
+      .sidebar.open {
+        transform: translateX(0);
+      }
+      .main-viewport {
+        margin-left: 0;
+        padding: 30px 20px 60px 20px;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .topbar {
+        padding: 0 14px;
+      }
+      .hero-card {
+        padding: 24px 18px;
+      }
+      .timeline-card {
+        padding: 20px 18px;
+      }
+      .hero-main-title {
+        font-size: 1.8rem;
+      }
+      .btn-resume span {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Bar (Header) -->
+  <header class="topbar">
+    <div class="topbar-left">
+      <button class="menu-toggle-btn" id="menuToggleBtn" aria-label="Toggle navigation menu">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="3" y1="12" x2="21" y2="12"></line>
+          <line x1="3" y1="6" x2="21" y2="6"></line>
+          <line x1="3" y1="18" x2="21" y2="18"></line>
+        </svg>
+      </button>
+
+      <!-- Coding Terminal Logo & Title -->
+      <a href="#home" class="brand-logo-wrap">
+        <div class="code-terminal-badge">&gt;_</div>
+        <div class="brand-text-block">
+          <span class="brand-name">Punam Gode</span>
+          <span class="brand-role">Python &amp; Django Developer</span>
+        </div>
+      </a>
+    </div>
+
+    <!-- Quick Search Filter Box -->
+    <div class="topbar-center">
+      <div class="search-box">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input type="text" id="filterInput" placeholder="Search projects, skills, tech stack..." />
+      </div>
+    </div>
+
+    <div class="topbar-right">
+      <a href="https://drive.google.com/file/d/1ZmmeQjz_6A5e92t9soctPeVhoBOHEkFL/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-topbar btn-resume">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+          <polyline points="14 2 14 8 20 8"></polyline>
+          <line x1="16" y1="13" x2="8" y2="13"></line>
+          <line x1="16" y1="17" x2="8" y2="17"></line>
+          <polyline points="10 9 9 9 8 9"></polyline>
+        </svg>
+        <span>Resume PDF</span>
+      </a>
+      <a href="#contact" class="btn-topbar btn-contact">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+          <polyline points="22,6 12,13 2,6"></polyline>
+        </svg>
+        Contact
+      </a>
+    </div>
+  </header>
+
+  <div class="app-layout">
+    <!-- Left Fixed Navigation Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div>
+        <div class="nav-group-title">Navigation</div>
+        <ul class="side-nav-list">
+          <li class="side-nav-item">
+            <a href="#home" class="active" data-nav="home">
+              <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                <polyline points="9 22 9 12 15 12 15 22"></polyline>
+              </svg>
+              Home
+            </a>
+          </li>
+          <li class="side-nav-item">
+            <a href="#projects" data-nav="projects">
+              <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon>
+              </svg>
+              Projects
+              <span class="side-badge">3</span>
+            </a>
+          </li>
+          <li class="side-nav-item">
+            <a href="#skills" data-nav="skills">
+              <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 2 12 8 18"></polyline>
+              </svg>
+              Skills &amp; Tech
+            </a>
+          </li>
+          <li class="side-nav-item">
+            <a href="#experience" data-nav="experience">
+              <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect>
+                <path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>
+              </svg>
+              Experience
+            </a>
+          </li>
+          <li class="side-nav-item">
+            <a href="#education" data-nav="education">
+              <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+              </svg>
+              About &amp; Education
+            </a>
+          </li>
+          <li class="side-nav-item">
+            <a href="#contact" data-nav="contact">
+              <svg class="side-nav-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              Contact
+            </a>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Capabilities Section (like reference screenshot) -->
+      <div>
+        <div class="nav-group-title">Core Capabilities</div>
+        <ul class="capabilities-list">
+          <li class="cap-item">
+            <span class="cap-item-icon">⚙️</span>
+            <span>Django &amp; REST APIs</span>
+          </li>
+          <li class="cap-item">
+            <span class="cap-item-icon">⚡</span>
+            <span>Async Tasks (Celery/Redis)</span>
+          </li>
+          <li class="cap-item">
+            <span class="cap-item-icon">🐘</span>
+            <span>PostgreSQL &amp; Query Optimization</span>
+          </li>
+          <li class="cap-item">
+            <span class="cap-item-icon">🤖</span>
+            <span>AI Agents &amp; RAG Systems</span>
+          </li>
+          <li class="cap-item">
+            <span class="cap-item-icon">🐳</span>
+            <span>Docker &amp; Containerization</span>
+          </li>
+        </ul>
+      </div>
+    </aside>
+
+    <!-- Main Scrollable Content Area -->
+    <main class="main-viewport">
+
+      <!-- ── SECTION 1: HOME / HERO ── -->
+      <section id="home" class="content-section">
+        <div class="hero-card">
+          <!-- Status pill without Nashik -->
+          <div class="joiner-status-pill">
+            <span class="pulse-dot"></span>
+            <span>Immediate Joiner • Pune / Remote</span>
+          </div>
+
+          <h1 class="hero-main-title">
+            Hi, I'm <span class="gradient-text">Punam Gode</span>
+          </h1>
+
+          <div class="hero-role-title">Python &amp; Django Developer</div>
+
+          <p class="hero-description">
+            Python and Django Developer with <strong>10 months of internship experience</strong> across two roles, specializing in scalable backend systems, RESTful APIs, and production-grade web applications. Proficient in <strong>PostgreSQL</strong>, asynchronous task processing with <strong>Celery and Redis</strong>, containerization with <strong>Docker</strong>, and conversational <strong>RAG and AI agent</strong> integrations.
+          </p>
+
+          <div class="hero-cta-group">
+            <a href="https://drive.google.com/file/d/1ZmmeQjz_6A5e92t9soctPeVhoBOHEkFL/view?usp=drive_link" target="_blank" rel="noopener noreferrer" class="btn-hero btn-hero-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="7 10 12 15 17 10"></polyline>
+                <line x1="12" y1="15" x2="12" y2="3"></line>
+              </svg>
+              Download Resume
+            </a>
+            <a href="#projects" class="btn-hero btn-hero-outline">
+              Explore Projects
+            </a>
+            <a href="#experience" class="btn-hero btn-hero-outline">
+              Work Experience
+            </a>
+          </div>
+
+          <div class="hero-links-row">
+            <a href="https://github.com/25punam" target="_blank" rel="noopener noreferrer" class="hero-link-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+              </svg>
+              GitHub (@25punam)
+            </a>
+            <a href="https://www.linkedin.com/in/25punam/" target="_blank" rel="noopener noreferrer" class="hero-link-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+              </svg>
+              LinkedIn Profile
+            </a>
+            <a href="mailto:25punamgode@gmail.com" class="hero-link-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              25punamgode@gmail.com
+            </a>
+            <a href="tel:+917559330757" class="hero-link-pill">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.8 19.79 19.79 0 01.22 1.18a2 2 0 012-2.18h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.91 6.37a16 16 0 006.72 6.72l1.57-1.57a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z"></path>
+              </svg>
+              +91 7559330757
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 2: EXPERIENCE (Styled exactly like reference screenshot) ── -->
+      <section id="experience" class="content-section">
+        <span class="badge-pill">Career Timeline</span>
+        <h2 class="section-headline">Professional Experience &amp; Milestones</h2>
+        <p class="section-subtext">Detailed breakdown of backend engineering, asynchronous data architecture, and production delivery.</p>
+
+        <div class="timeline-container">
+          <!-- Aivista Technologies -->
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div class="job-title-wrap">
+                Python Developer Intern <span class="job-company-tag">@ Aivista Technologies Pvt. Ltd.</span>
+              </div>
+              <span class="timeline-period-pill">August 2026 – Present</span>
+            </div>
+            <div class="timeline-location">Pune, Maharashtra</div>
+
+            <!-- Highlight Box like Reference -->
+            <div class="experience-highlight-box">
+              Building intelligent backend services, Google OAuth authentication from scratch, transactional SMTP notification systems, and conversational RAG architectures integrated with Knowledge Graphs.
+            </div>
+
+            <div class="timeline-label">Key Responsibilities &amp; Deliverables:</div>
+            <ul class="timeline-bullet-list">
+              <li>
+                <strong><a href="https://edujunction.co.in/" target="_blank" rel="noopener noreferrer">Edujunction</a>:</strong> Developed <strong>Sign in with Google (Google OAuth 2.0)</strong> from scratch and engineered key frontend interfaces including the responsive <strong>landing page</strong> and <strong>admin panel</strong> as part of a full-stack Django team.
+              </li>
+              <li>
+                <strong>Notifications Workflow:</strong> Architected automated <strong>Email &amp; SMS notification</strong> pipelines via <strong>SMTP</strong> and third-party SMS APIs, delivering transactional triggers and asynchronous user communication.
+              </li>
+              <li>
+                <strong>Working Capital Agent:</strong> Developed a context-aware <strong>Retrieval-Augmented Generation (RAG)</strong> conversational chatbot, delivering intelligent information retrieval and natural language question answering.
+              </li>
+              <li>
+                <strong>DAgent Application:</strong> Engineered an <strong>AI-powered agent</strong> utilizing <strong>RAG</strong>, <strong>ArangoDB</strong>, and <strong>Knowledge Graph (KGraph)</strong> technologies for multi-source knowledge integration and relational entity traversal.
+              </li>
+              <li>
+                <strong>Backend &amp; API Development:</strong> Designed, implemented, and benchmarked <strong>RESTful APIs</strong> using <strong>Flask</strong> and <strong>PostgreSQL</strong>; built interactive <strong>React.js</strong> frontend components and optimized database schemas.
+              </li>
+            </ul>
+          </div>
+
+          <!-- Aplus Topper -->
+          <div class="timeline-card">
+            <div class="timeline-card-header">
+              <div class="job-title-wrap">
+                Python Developer Intern <span class="job-company-tag">@ Aplus Topper</span>
+              </div>
+              <span class="timeline-period-pill">June 2025 – November 2025</span>
+            </div>
+            <div class="timeline-location">Pune, Maharashtra</div>
+
+            <!-- Highlight Box like Reference -->
+            <div class="experience-highlight-box">
+              Engineered high-speed automated algorithmic trading platform for NIFTY options with real-time REST API market data pipelines and live risk monitoring dashboards.
+            </div>
+
+            <div class="timeline-label">Key Responsibilities &amp; Deliverables:</div>
+            <ul class="timeline-bullet-list">
+              <li>
+                <strong>Automated Trading Engine:</strong> Engineered a low-latency <strong>NIFTY options algorithmic trading system</strong> using <strong>Python</strong> and <strong>Django</strong>, replacing manual execution with automated order routing.
+              </li>
+              <li>
+                <strong>Flattrade API Integration &amp; Fault Tolerance:</strong> Integrated <strong>Flattrade REST API</strong> to ingest live <strong>OHLC</strong> tick data; implemented exponential backoff, circuit breaking, and resilient <strong>retry logic</strong> to ensure unbroken execution during market volatility.
+              </li>
+              <li>
+                <strong>Quantitative Strategy Automation:</strong> Developed automated signal generation layer based on <strong>SuperTrend</strong>, calculating real-time <strong>ATR</strong> volatility indicators to adjust dynamic trailing stop-loss bands without human bias.
+              </li>
+              <li>
+                <strong>Real-Time Monitoring Dashboard:</strong> Designed an interactive web dashboard to visualize real-time <strong>MTM</strong> (Mark-to-Market) P&amp;L metrics, live candle charts, and emergency manual kill switches.
+              </li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 3: PROJECTS ── -->
+      <section id="projects" class="content-section">
+        <span class="badge-pill">Portfolio</span>
+        <h2 class="section-headline">Featured Engineering Projects</h2>
+        <p class="section-subtext">Production-grade web backends, async message queues, and AI-powered conversational tools.</p>
+
+        <div class="projects-grid">
+          <!-- Movie Search API -->
+          <div class="project-card">
+            <div>
+              <div class="project-header-row">
+                <h3 class="project-card-title">Movie Search API</h3>
+              </div>
+              <p class="project-card-desc">
+                High-performance movie discovery backend built on <strong>Django REST Framework</strong> handling <strong>300,000+ movie records</strong>. Leveraged <strong>PostgreSQL indexing</strong> for sub-second queries, custom pagination, and scheduled background data ingestion using <strong>Celery &amp; Redis</strong> in Docker Compose.
+              </p>
+            </div>
+            <div>
+              <div class="project-tag-wrap">
+                <span class="tech-pill">Django</span>
+                <span class="tech-pill">DRF</span>
+                <span class="tech-pill">PostgreSQL</span>
+                <span class="tech-pill">Celery</span>
+                <span class="tech-pill">Redis</span>
+                <span class="tech-pill">Docker</span>
+              </div>
+              <div class="project-actions-row">
+                <a href="https://github.com/Movie-API.git" target="_blank" rel="noopener noreferrer" class="btn-project">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+                  </svg>
+                  Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- E-Commerce Platform -->
+          <div class="project-card">
+            <div>
+              <div class="project-header-row">
+                <h3 class="project-card-title">E-Commerce Platform</h3>
+              </div>
+              <p class="project-card-desc">
+                Full-stack e-commerce web application with <strong>Django ORM</strong> featuring catalog browsing, cart operations, customer checkout flow, and complete order management. Integrated <strong>Razorpay payment gateway</strong> with signature verification and automated confirmation alerts.
+              </p>
+            </div>
+            <div>
+              <div class="project-tag-wrap">
+                <span class="tech-pill">Django</span>
+                <span class="tech-pill">Razorpay</span>
+                <span class="tech-pill">Bootstrap</span>
+                <span class="tech-pill">HTML5/CSS3</span>
+              </div>
+              <div class="project-actions-row">
+                <a href="https://ecommerce-cxm8.onrender.com/" target="_blank" rel="noopener noreferrer" class="btn-project">
+                  Live Demo ↗
+                </a>
+                <a href="https://github.com/ecommerce.git" target="_blank" rel="noopener noreferrer" class="btn-project">
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <!-- AI Agent Platform -->
+          <div class="project-card">
+            <div>
+              <div class="project-header-row">
+                <h3 class="project-card-title">AI Agent Platform</h3>
+              </div>
+              <p class="project-card-desc">
+                Autonomous conversational assistant powered by <strong>Django &amp; Anthropic Claude API</strong> with <strong>tool calling</strong> capabilities. Automatically parses natural language requests to inspect and manipulate e-commerce database records, maintaining continuous session history.
+              </p>
+            </div>
+            <div>
+              <div class="project-tag-wrap">
+                <span class="tech-pill">Django</span>
+                <span class="tech-pill">Python</span>
+                <span class="tech-pill">Claude API</span>
+                <span class="tech-pill">Function Calling</span>
+              </div>
+              <div class="project-actions-row">
+                <a href="https://github.com/25punam/ai-agent-platform.git" target="_blank" rel="noopener noreferrer" class="btn-project">
+                  Source Code
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 4: SKILLS & SERVICES ── -->
+      <section id="skills" class="content-section">
+        <span class="badge-pill">Capabilities</span>
+        <h2 class="section-headline">Technical Stack &amp; Skills</h2>
+        <p class="section-subtext">Core programming tools, databases, and architectural frameworks used in daily engineering.</p>
+
+        <div class="skills-category-grid">
+          <div class="skill-block">
+            <div class="skill-block-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+              Languages &amp; Frameworks
+            </div>
+            <div class="skill-badge-cloud">
+              <span class="skill-badge">Python</span>
+              <span class="skill-badge">Django</span>
+              <span class="skill-badge">Django REST Framework (DRF)</span>
+              <span class="skill-badge">Flask</span>
+              <span class="skill-badge">React.js</span>
+              <span class="skill-badge">JavaScript</span>
+              <span class="skill-badge">SQL</span>
+            </div>
+          </div>
+
+          <div class="skill-block">
+            <div class="skill-block-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><ellipse cx="12" cy="5" rx="9" ry="3"></ellipse><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"></path><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"></path></svg>
+              Databases &amp; Caching
+            </div>
+            <div class="skill-badge-cloud">
+              <span class="skill-badge">PostgreSQL</span>
+              <span class="skill-badge">Redis</span>
+              <span class="skill-badge">ArangoDB</span>
+              <span class="skill-badge">Query Optimization</span>
+              <span class="skill-badge">Database Indexing</span>
+            </div>
+          </div>
+
+          <div class="skill-block">
+            <div class="skill-block-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect><rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect><line x1="6" y1="6" x2="6.01" y2="6"></line><line x1="6" y1="18" x2="6.01" y2="18"></line></svg>
+              DevOps &amp; Asynchronous Tools
+            </div>
+            <div class="skill-badge-cloud">
+              <span class="skill-badge">Docker</span>
+              <span class="skill-badge">Docker Compose</span>
+              <span class="skill-badge">Celery</span>
+              <span class="skill-badge">Celery Beat</span>
+              <span class="skill-badge">Git &amp; GitHub</span>
+              <span class="skill-badge">Postman</span>
+              <span class="skill-badge">Linux</span>
+              <span class="skill-badge">UV Package Manager</span>
+            </div>
+          </div>
+
+          <div class="skill-block">
+            <div class="skill-block-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+              APIs, Auth &amp; Web Protocols
+            </div>
+            <div class="skill-badge-cloud">
+              <span class="skill-badge">RESTful APIs</span>
+              <span class="skill-badge">API Integration</span>
+              <span class="skill-badge">JWT Authentication</span>
+              <span class="skill-badge">Google OAuth 2.0</span>
+              <span class="skill-badge">SMTP Email</span>
+              <span class="skill-badge">SMS API</span>
+              <span class="skill-badge">Razorpay Gateway</span>
+              <span class="skill-badge">HTML5 / CSS3</span>
+            </div>
+          </div>
+
+          <div class="skill-block">
+            <div class="skill-block-title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a8 8 0 0 0-8 8c0 3.36 2.06 6.24 5 7.42V20a2 2 0 0 0 2 2h2a2 2 0 0 0 2-2v-2.58c2.94-1.18 5-4.06 5-7.42a8 8 0 0 0-8-8z"></path></svg>
+              AI &amp; Emerging Systems
+            </div>
+            <div class="skill-badge-cloud">
+              <span class="skill-badge">RAG (Retrieval-Augmented Gen)</span>
+              <span class="skill-badge">Knowledge Graphs (KGraph)</span>
+              <span class="skill-badge">Anthropic Claude API</span>
+              <span class="skill-badge">Tool Calling &amp; Function Agents</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── SECTION 5: EDUCATION & ABOUT ── -->
+      <section id="education" class="content-section">
+        <span class="badge-pill">Academics</span>
+        <h2 class="section-headline">Education &amp; Credentials</h2>
+        <p class="section-subtext">University degree and academic background in computer science.</p>
+
+        <div class="edu-card">
+          <div>
+            <div class="edu-degree">Bachelor of Computer Science (B.C.S.)</div>
+            <div class="edu-sub">K.K. Wagh Arts, Science and Commerce College, Pimpalgaon (B.)</div>
+            <div class="edu-sub" style="font-size: 0.85rem; color: var(--text-light);">Savitribai Phule Pune University (SPPU) • 2020 – 2023</div>
+          </div>
+          <span class="edu-badge">72.58% Overall</span>
+        </div>
+      </section>
+
+      <!-- ── SECTION 6: CONTACT ── -->
+      <section id="contact" class="content-section">
+        <div class="contact-container-card">
+          <span class="badge-pill">Get In Touch</span>
+          <h2 class="section-headline" style="margin-top: 6px;">Let's Build Something Together</h2>
+          <p class="section-subtext" style="max-width: 580px; margin: 0 auto;">
+            I am actively interviewing for <strong>Python / Django Developer</strong> roles (open to Pune and Remote). Feel free to reach out directly:
+          </p>
+
+          <div class="contact-buttons-wrap">
+            <a href="mailto:25punamgode@gmail.com" class="btn-hero btn-hero-primary">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                <polyline points="22,6 12,13 2,6"></polyline>
+              </svg>
+              25punamgode@gmail.com
+            </a>
+            <a href="https://www.linkedin.com/in/25punam/" target="_blank" rel="noopener noreferrer" class="btn-hero btn-hero-outline">
+              LinkedIn Profile
+            </a>
+            <a href="https://github.com/25punam" target="_blank" rel="noopener noreferrer" class="btn-hero btn-hero-outline">
+              GitHub Repositories
+            </a>
+            <a href="tel:+917559330757" class="btn-hero btn-hero-outline">
+              +91 7559330757
+            </a>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <script>
+    // Mobile navigation drawer toggle
+    const menuBtn = document.getElementById('menuToggleBtn');
+    const sidebar = document.getElementById('sidebar');
+
+    menuBtn.addEventListener('click', () => {
+      sidebar.classList.toggle('open');
+    });
+
+    // Close sidebar on link click (mobile)
+    document.querySelectorAll('.side-nav-item a').forEach(link => {
+      link.addEventListener('click', () => {
+        sidebar.classList.remove('open');
+        document.querySelectorAll('.side-nav-item a').forEach(a => a.classList.remove('active'));
+        link.classList.add('active');
+      });
+    });
+
+    // Simple live search filter for projects and skills
+    const filterInput = document.getElementById('filterInput');
+    if (filterInput) {
+      filterInput.addEventListener('input', (e) => {
+        const query = e.target.value.toLowerCase().trim();
+        const projectCards = document.querySelectorAll('.project-card');
+        const skillBlocks = document.querySelectorAll('.skill-block');
+
+        projectCards.forEach(card => {
+          const text = card.textContent.toLowerCase();
+          card.style.display = text.includes(query) ? 'flex' : 'none';
+        });
+
+        skillBlocks.forEach(block => {
+          const text = block.textContent.toLowerCase();
+          block.style.display = text.includes(query) ? 'block' : 'none';
+        });
+      });
+    }
+
+    // Active state highlighting on scroll
+    const sections = document.querySelectorAll('section');
+    const navLinks = document.querySelectorAll('.side-nav-item a');
+
+    window.addEventListener('scroll', () => {
+      let currentSection = '';
+      sections.forEach(section => {
+        const sectionTop = section.offsetTop - 120;
+        if (pageYOffset >= sectionTop) {
+          currentSection = section.getAttribute('id');
+        }
+      });
+
+      navLinks.forEach(link => {
+        link.classList.remove('active');
+        if (link.getAttribute('data-nav') === currentSection) {
+          link.classList.add('active');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
